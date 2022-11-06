@@ -22,10 +22,12 @@ def MyNetwork():
 
     info( '*** Add switches\n')
     s1 = net.addSwitch('s1')
+    internalGateway = "10.10.10.9"
+    externalGateway = "10.10.10.10"
 
     info( '*** Add hosts\n')
     
-    client1 = net.addHost('client1', cls=Host, ip='10.0.0.10', defaultRoute=None, cpu=0.2)
+    client1 = net.addHost('client1', cls=Host, ip='10.10.10.2', defaultRoute=None, cpu=0.2)
    
     serv1 = net.addHost('serv1', cls=Host, ip='10.10.10.11', defaultRoute=None)
     serv2 = net.addHost('serv2', cls=Host, ip='10.10.10.12', defaultRoute=None)
@@ -33,11 +35,18 @@ def MyNetwork():
     
     info( '*** Add links\n')
 
-    net.addLink(client1, s1, bw=1)
+    net.addLink(client1, s1, bw=12)
 
-    net.addLink(s1, serv1, bw=10)
+    net.addLink(s1, serv1, bw=4)
     net.addLink(s1, serv2, bw=4)
     net.addLink(s1, serv3, bw=4)
+
+    # Add Default Routes for all the nodes
+    serv1, serv2, serv3, client1 = net.get('h1', 'h2', 'h3', 'c1')
+    serv1.cmd("ip route add default via " + internalGateway)
+    serv1.cmd("ip route add default via " + internalGateway)
+    serv1.cmd("ip route add default via " + internalGateway)
+    client1.cmd("ip route add default via " + externalGateway)
 
     info( '*** Starting network\n')
     net.build()
