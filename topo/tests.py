@@ -1,14 +1,14 @@
 import time
 
 def testbase(net):
-    serv1 = net.get("serv1")
-    serv1.sendCmd("python ../nodes/server.py &")
+    net.get("serv1").sendCmd("python ../nodes/server.py &")
+    net.get("serv2").sendCmd("python ../nodes/server.py &")
+    net.get("serv3").sendCmd("python ../nodes/server.py &")
 
-    net.get("c4").sendCmd("python ../nodes/loadBalanceNode.py n &")
+    net.get("client1").sendCmd("python ../nodes/loadBalanceNode.py n &")
 
     print("--> Starting load with one client - for base performance")
 
-    net.get("c3").cmd("python ../nodes/client.py local")
 
     time.sleep(4)
     
