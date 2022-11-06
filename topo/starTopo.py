@@ -42,7 +42,7 @@ def MyNetwork():
     net.addLink(s1, serv3, bw=4)
 
     # Add Default Routes for all the nodes
-    serv1, serv2, serv3, client1 = net.get('h1', 'h2', 'h3', 'c1')
+    serv1, serv2, serv3, client1 = net.get('serv1', 'serv2', 'serv3', 'client1')
     serv1.cmd("ip route add default via " + internalGateway)
     serv1.cmd("ip route add default via " + internalGateway)
     serv1.cmd("ip route add default via " + internalGateway)
