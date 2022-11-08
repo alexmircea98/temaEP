@@ -8,7 +8,7 @@ class LoadBalancingSwitch(app_manager.RyuApp):
     OFP_VERSIONS = [ofproto_v1_0.OFP_VERSION]
 
     global EX_IP
-    EX_IP = "10.10.10.10"
+    EX_IP = "10.10.11.1"
 
     global SLAVES
     servers = ["10.10.10.11", "10.10.10.12", "10.10.10.13"]

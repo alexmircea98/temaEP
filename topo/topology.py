@@ -13,40 +13,38 @@ from tests import *
 def MyNetwork():
 
     net = Mininet( topo=None,
-                   build=False,
-                   link=TCLink,
-                   ipBase='10.0.0.0/8')
+                   build=False)
 
     info( '*** Adding controller\n' )
     con1=net.addController(name='con1', controller=RemoteController)
 
     info( '*** Add switches\n')
     s1 = net.addSwitch('s1')
-    internalGateway = "10.10.10.9"
-    externalGateway = "10.10.10.10"
+    internalGateway = "10.10.10.1"
+    externalGateway = "10.10.11.1"
 
     info( '*** Add hosts\n')
     
-    client1 = net.addHost('client1', cls=Host, ip='10.10.10.2', defaultRoute=None, cpu=0.2)
+    client1 = net.addHost('client1', cls=Host, ip='10.10.11.2', defaultRoute=externalGateway)
    
-    serv1 = net.addHost('serv1', cls=Host, ip='10.10.10.11', defaultRoute=None)
-    serv2 = net.addHost('serv2', cls=Host, ip='10.10.10.12', defaultRoute=None)
-    serv3 = net.addHost('serv3', cls=Host, ip='10.10.10.13', defaultRoute=None)
+    serv1 = net.addHost('serv1', cls=Host, ip='10.10.10.11', defaultRoute=internalGateway)
+    serv2 = net.addHost('serv2', cls=Host, ip='10.10.10.12', defaultRoute=internalGateway)
+    serv3 = net.addHost('serv3', cls=Host, ip='10.10.10.13', defaultRoute=internalGateway)
     
     info( '*** Add links\n')
 
-    net.addLink(client1, s1, bw=12)
+    net.addLink(client1, s1)
 
     net.addLink(s1, serv1, bw=4)
     net.addLink(s1, serv2, bw=4)
     net.addLink(s1, serv3, bw=4)
 
     # Add Default Routes for all the nodes
-    serv1, serv2, serv3, client1 = net.get('serv1', 'serv2', 'serv3', 'client1')
-    serv1.cmd("ip route add default via " + internalGateway)
-    serv1.cmd("ip route add default via " + internalGateway)
-    serv1.cmd("ip route add default via " + internalGateway)
-    client1.cmd("ip route add default via " + externalGateway)
+    
+    # serv1.cmd("ip route add default via " + internalGateway)
+    # serv1.cmd("ip route add default via " + internalGateway)
+    # serv1.cmd("ip route add default via " + internalGateway)
+    # client1.cmd("ip route add default via " + externalGateway)
 
     info( '*** Starting network\n')
     net.build()
