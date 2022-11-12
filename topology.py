@@ -13,6 +13,7 @@ from mininet.node import Node
 from mininet.log import setLogLevel, info
 from mininet.link import TCLink
 from mininet.cli import CLI
+from test import *
 
 class LinuxRouter( Node ):
     "A Node with IP forwarding enabled."
@@ -116,7 +117,17 @@ def run():
     print(net[ 'r1' ].cmd( 'route' ))
     info( '*** Routing Table on Router2:\n' )
     print(net[ 'r2' ].cmd( 'route' ))
-    CLI( net )
+    
+    # Testing area
+    if (len(sys.argv) >= 2):        
+        if sys.argv[1] == "test":
+            test(net)
+        else:
+            print("no such test")
+    else:
+        print("Unregonised test, starting cli")
+        CLI(net)
+    
     net.stop()
 
 if __name__ == '__main__':
