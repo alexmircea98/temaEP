@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
 
 import requests     # http(s) requests
 import argparse     # argument parsing
@@ -60,13 +61,16 @@ def disp_http(resp_list):
             sm_color = ANSI_RED
 
         # print the info
+        logfile = open('client_log.txt', 'w+')
         print('%sURL :%s %s%s' % \
-              (ANSI_BOLD, ANSI_UNBOLD, resp[0], ANSI_CLR))
+              (ANSI_BOLD, ANSI_UNBOLD, resp[0], ANSI_CLR), file = logfile)
         print('%sCODE:%s %s%d%s' % \
-              (ANSI_BOLD, ANSI_UNBOLD, sm_color, resp[1], ANSI_CLR))
+              (ANSI_BOLD, ANSI_UNBOLD, sm_color, resp[1], ANSI_CLR), file = logfile)
         print('%sTIME:%s %d [μs]%s' % \
-              (ANSI_BOLD, ANSI_UNBOLD, resp[2], ANSI_CLR))
-        print()
+              (ANSI_BOLD, ANSI_UNBOLD, resp[2], ANSI_CLR), file = logfile)
+        print("\n", file = logfile)
+        logfile.close()
+
 
 ################################################################################
 ############################## SCRIPT ENTRY POINT ##############################
@@ -83,22 +87,21 @@ def main():
     cfg = parser.parse_args()
 
     # select backend depending on protocol
-    match cfg.proto:
-        case 'http':
-            if not cfg.URL.startswith('http://'):
-                cfg.URL = 'http://' + cfg.URL
+    if cfg.proto == 'http':
+        if not cfg.URL.startswith('http://'):
+            cfg.URL = 'http://' + cfg.URL
 
-            ans = http_get(cfg.URL)
-            disp_http(ans)
-        case 'https':
-            if not cfg.URL.startswith('https://'):
-                cfg.URL = 'https://' + cfg.URL
+        ans = http_get(cfg.URL)
+        disp_http(ans)
+    elif cfg.proto == 'https':
+        if not cfg.URL.startswith('https://'):
+            cfg.URL = 'https://' + cfg.URL
 
-            ans = http_get(cfg.URL)
-            disp_http(ans)
-        case _:
-            parser.print_help()
-            exit(-1)
+        ans = http_get(cfg.URL)
+        disp_http(ans)
+    else:
+        parser.print_help()
+        exit(-1)
 
 if __name__ == '__main__':
     main()
