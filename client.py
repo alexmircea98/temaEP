@@ -66,7 +66,7 @@ def disp_http(resp_list):
               (ANSI_BOLD, ANSI_UNBOLD, resp[0], ANSI_CLR), file = logfile)
         print('%sCODE:%s %s%d%s' % \
               (ANSI_BOLD, ANSI_UNBOLD, sm_color, resp[1], ANSI_CLR), file = logfile)
-        print('%sTIME:%s %d [μs]%s' % \
+        print('%sTIME:%s %d [microsecs]%s' % \
               (ANSI_BOLD, ANSI_UNBOLD, resp[2], ANSI_CLR), file = logfile)
         print("\n", file = logfile)
         logfile.close()
