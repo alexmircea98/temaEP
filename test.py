@@ -11,6 +11,11 @@ def test(net):
 
     time.sleep(4)
     
-    net.get("c1").monitor()
+    # Wait for the client command to finish and retrieve its output
+    output = net.get("c1").waitOutput()
+    print("Client output:")
+    print(output)
+
     print("Done")
+    print("hint:Quit and check client_log.txt")
     return
